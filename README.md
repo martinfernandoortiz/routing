@@ -42,12 +42,23 @@ select * from pgr_bdDijkstra (
 			  86, 100, true); 
    ```
 Basicamente a la tabla ways (la que tiene los ejes) le estamos diciendo que calcule el costo entre el eje con source 100 al target 86. El resultado que da es en grados ya que la tabla está en wgs84. 
-La query toma el método directo
+La query toma el método directo. En el caso de querer un camino indirecto hay que poner false a lo último (reemplazar el true)
 
 ![imagen](https://github.com/martinfernandoortiz/routing/assets/38224115/92cb4851-3833-4541-8e28-f13baad0865d)
 
-##### Consulta básica - Sin método directo
+## uno a muchos
+  ```
+select * from pgr_bdDijkstra (
+   'select gid AS id,
+   	source,
+   	target,
+   	cost,
+   	length AS cost
+   FROM ways',
+   		  86, ARRAY[100,12], true);
+  ```
 
+       
  #Consulta con elcosto en metros
  ``` select * from pgr_bdDijkstra (
 	'select gid AS id, source, target, cost, ST_Length(the_geom::geography) AS cost FROM ways',
